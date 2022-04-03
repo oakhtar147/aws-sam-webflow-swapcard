@@ -10,6 +10,7 @@ Resources:
       Handler: webflow.handler
       Runtime: nodejs14.x
       MemorySize: 128
+      Timeout: 20
       Environment:
         Variables:
           SWAPCARD_PERSONAL_ACCESS_TOKEN: "NjI0NzUwN2JiMDJkOGQ0OGYzZjVlYzc4OjcyNDZlZDczYzI3MjRiZWZhMWM4NjM4NGI4MGU5YjE0"
