@@ -7,6 +7,7 @@ const { mapping } = require("./type-mapping");
 async function createNewSessions(
 	webflow,
 	sessions,
+	eventSlug,
 	swapCardSessions,
 	speakers,
 	exhibitors
@@ -136,6 +137,7 @@ async function createNewSessions(
 							thematiques: THEMES,
 							"lieu-2": session.place,
 							type: mapping[session.type],
+							"add-to-my-schedule-link": `https://app.swapcard.com/event/${eventSlug}/planning/${session.id}`,
 						},
 					},
 					{ live: true }

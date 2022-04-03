@@ -1,4 +1,4 @@
-const query = `
+const getPlanningsQuery = `
   query getEventSessionData($eventId: String!) {
     plannings(eventId: $eventId, page: 0, pageSize: 1000) {
         id
@@ -57,11 +57,11 @@ const query = `
       }
   }`;
 
-const variables = {
+const getPlanningsVariables = {
 	eventId: `RXZlbnRfODEyMjIx`,
 };
 
 module.exports = {
-	query,
-	variables,
+	getPlanningsQuery,
+	getPlanningsVariables,
 };

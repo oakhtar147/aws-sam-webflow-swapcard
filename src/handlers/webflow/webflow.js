@@ -2,14 +2,21 @@ const fetch = require("isomorphic-fetch");
 const Webflow = require("webflow-api");
 const { createNewExhibitors } = require("./helpers/createNewExhibitors");
 const { createNewSpeakers } = require("./helpers/createNewSpeakers");
-const { query, variables } = require("./helpers/query");
+const {
+	getEventSlugQuery,
+	getEventSlugVariables,
+} = require("./helpers/event-query");
+const {
+	getPlanningsQuery,
+	getPlanningsVariables,
+} = require("./helpers/plannings-query");
 const { COLLECTION_ID } = require("./helpers/collection-ids");
 const { createNewSessions } = require("./helpers/createNewSessions");
 
 const ENDPOINT = `https://developer.swapcard.com/event-admin/graphql`;
 
 exports.handler = async (event, context) => {
-	const currTime = new Date();
+	const currTime = new Date(event.time);
 	console.log(`Current Time: ${currTime.toTimeString()}`);
 
 	const swapCardSessions = await fetch(ENDPOINT, {
@@ -20,12 +27,29 @@ exports.handler = async (event, context) => {
 			Authorization: process.env.SWAPCARD_PERSONAL_ACCESS_TOKEN,
 		},
 		body: JSON.stringify({
-			query,
-			variables,
+			query: getPlanningsQuery,
+			variables: getPlanningsVariables,
 		}),
 	}).then((res) => res.json());
 
-	const webflow = new Webflow({ token: process.env.WEBFLOW_ACCESS_TOKEN });
+	const eventSlug = await fetch(ENDPOINT, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Accept: "application/json",
+			Authorization: process.env.SWAPCARD_PERSONAL_ACCESS_TOKEN,
+		},
+		body: JSON.stringify({
+			query: getEventSlugQuery,
+			variables: getEventSlugVariables,
+		}),
+	}).then((res) => res.json());
+
+	console.log(eventSlug);
+
+	const webflow = new Webflow({
+		token: process.env.WEBFLOW_ACCESS_TOKEN,
+	});
 
 	// get all the items for a collection
 	const getSessionItems = webflow.items(
@@ -74,6 +98,7 @@ exports.handler = async (event, context) => {
 	await createNewSessions(
 		webflow,
 		sessions,
+		eventSlug.data.event.slug,
 		swapCardSessions,
 		speakers,
 		exhibitors
