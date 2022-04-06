@@ -45,8 +45,6 @@ exports.handler = async (event, context) => {
 		}),
 	}).then((res) => res.json());
 
-	console.log(eventSlug);
-
 	const webflow = new Webflow({
 		token: process.env.WEBFLOW_ACCESS_TOKEN,
 	});
@@ -84,6 +82,9 @@ exports.handler = async (event, context) => {
 	} catch (e) {
 		console.log(e);
 	}
+
+	// const collection = await webflow.collection({ collectionId: COLLECTION_ID.sessions });
+	// console.log(collection.fields.map(f => f.slug))
 
 	// create new speakers
 	console.log("\nCREATING NEW SPEAKERS...");

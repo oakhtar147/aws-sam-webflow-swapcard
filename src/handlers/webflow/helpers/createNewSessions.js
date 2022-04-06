@@ -34,7 +34,7 @@ async function createNewSessions(
 			id: s.id,
 			details: s.exhibitors.map((ex) => ({
 				name: ex.name,
-			}))?.[0],
+			})),
 		};
 	}).filter((x) => !!x.details);
 
@@ -103,13 +103,16 @@ async function createNewSessions(
 			);
 
 			for (const exhibitor of sessionExhibitors) {
-				for (const webflowExhibitor of EXHIBITOR_NAMES_IN_WEBFLOW) {
-					if (exhibitor.details.name.trim() === webflowExhibitor.name.trim()) {
-						EXHIBITOR_IDS.push(
-							exhibitors.items.find((ex) => {
-								return webflowExhibitor.name.trim() === ex.name.trim();
-							})._id
-						);
+				for (const ex1 of exhibitor.details) {
+					console.log(ex1.name);
+					for (const webflowExhibitor of EXHIBITOR_NAMES_IN_WEBFLOW) {
+						if (ex1.name.trim() === webflowExhibitor.name.trim()) {
+							EXHIBITOR_IDS.push(
+								exhibitors.items.find((ex) => {
+									return webflowExhibitor.name.trim() === ex.name.trim();
+								})._id
+							);
+						}
 					}
 				}
 			}
@@ -133,7 +136,7 @@ async function createNewSessions(
 							"start-time": session.beginsAt.split(" ")[1],
 							"end-time": session.endsAt.split(" ")[1],
 							speakers: COMMON_SPEAKERS_IDS,
-							exhibitors: EXHIBITOR_IDS[0],
+							exhibitor: EXHIBITOR_IDS,
 							thematiques: THEMES,
 							"lieu-2": session.place,
 							type: mapping[session.type],

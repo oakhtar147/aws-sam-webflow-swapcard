@@ -3,7 +3,7 @@ const mapping = {
 	"Panel (45 min)": "Panel",
 	Atelier: "Atelier",
 	"table-ronde": "Table Ronde",
-	"evenements-speciaux": "Événements spéciaux",
+	entretien: "Entretien",
 	"cercle-samoan": "Cercle Samoan",
 	"culture-and-bien-etre": "Culture & bien être",
 };
