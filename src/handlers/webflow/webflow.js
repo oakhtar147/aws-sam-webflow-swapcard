@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const fetch = require("isomorphic-fetch");
 const Webflow = require("webflow-api");
 const { createNewExhibitors } = require("./helpers/createNewExhibitors");
@@ -10,12 +12,16 @@ const {
   getPlanningsQuery,
   getPlanningsVariables
 } = require("./helpers/plannings-query");
+const {
+  getPeopleQuery,
+  getPeopleVariables
+} = require("./helpers/people-query");
 const { COLLECTION_ID } = require("./helpers/collection-ids");
 const { createNewSessions } = require("./helpers/createNewSessions");
 
 const ENDPOINT = `https://developer.swapcard.com/event-admin/graphql`;
 
-exports.handler = async (event, context) => {
+const handler = async (event, context) => {
   const currTime = new Date();
   console.log(`Current Time: ${currTime.toTimeString()}`);
 
@@ -29,6 +35,19 @@ exports.handler = async (event, context) => {
     body: JSON.stringify({
       query: getPlanningsQuery,
       variables: getPlanningsVariables
+    })
+  }).then((res) => res.json());
+
+  const swapCardPeople = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: process.env.SWAPCARD_PERSONAL_ACCESS_TOKEN
+    },
+    body: JSON.stringify({
+      query: getPeopleQuery,
+      variables: getPeopleVariables
     })
   }).then((res) => res.json());
 
@@ -88,7 +107,7 @@ exports.handler = async (event, context) => {
 
   // create new speakers
   console.log("\nCREATING NEW SPEAKERS...");
-  await createNewSpeakers(webflow, speakers, swapCardSessions);
+  await createNewSpeakers(webflow, speakers, swapCardPeople);
 
   // create new exhibitors
   console.log("CREATING NEW EXHIBITORS...");
@@ -107,3 +126,5 @@ exports.handler = async (event, context) => {
 
   return { message: "Success" };
 };
+
+handler();

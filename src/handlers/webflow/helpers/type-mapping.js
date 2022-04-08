@@ -1,13 +1,13 @@
 const mapping = {
-	conference: "Conférence",
-	"Panel (45 min)": "Panel",
-	Atelier: "Atelier",
-	"table-ronde": "Table Ronde",
-	entretien: "Entretien",
-	"cercle-samoan": "Cercle Samoan",
-	"culture-and-bien-etre": "Culture & bien être",
+  Conférence: "Conférence",
+  Panel: "Panel",
+  Atelier: "Atelier",
+  "Table Ronde": "Table ronde",
+  Entretien: "Entretien",
+  "Cercle samoan": "Cercle samoan",
+  "Culture & bien être": "Culture & bien être"
 };
 
 module.exports = {
-	mapping,
+  mapping
 };
