@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const fetch = require("isomorphic-fetch");
 const Webflow = require("webflow-api");
 const { createNewExhibitors } = require("./helpers/createNewExhibitors");
@@ -21,7 +19,7 @@ const { createNewSessions } = require("./helpers/createNewSessions");
 
 const ENDPOINT = `https://developer.swapcard.com/event-admin/graphql`;
 
-const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   const currTime = new Date();
   console.log(`Current Time: ${currTime.toTimeString()}`);
 
@@ -126,5 +124,3 @@ const handler = async (event, context) => {
 
   return { message: "Success" };
 };
-
-handler();
