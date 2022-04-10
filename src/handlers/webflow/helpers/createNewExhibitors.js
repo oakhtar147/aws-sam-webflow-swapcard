@@ -33,7 +33,6 @@ async function createNewExhibitors(
               fields: {
                 _archived: false,
                 _draft: false,
-                slug: makeid(25),
                 "swapcard-id": ex.id,
                 name: ex.name,
                 description: ex.description,

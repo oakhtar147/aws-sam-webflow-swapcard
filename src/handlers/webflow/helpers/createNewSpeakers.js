@@ -15,8 +15,18 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
       try {
         let companyName;
         if (speaker.organization) {
-          companyName = speaker.organization.replace(/\n/g, " ");
+          companyName = speaker.organization.replace(/\n/g, "");
         }
+        const speakerOrganization = companyName || speaker.organization;
+
+        const slugInputDetails =
+          speaker.firstName +
+          " " +
+          speaker.lastName +
+          " " +
+          speakerOrganization;
+        const newSlug = generateSlug(slugInputDetails);
+
         const newSpeaker = await webflow.createItem(
           {
             collectionId: COLLECTION_ID.speakers,
@@ -26,10 +36,10 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
               "swapcard-id": speaker.id,
               name: speaker.firstName,
               "nom-de-familie": speaker.lastName, // lastName
-              slug: makeid(15),
+              slug: newSlug,
               "role-titre-professionnel": speaker.jobTitle,
               biographie: speaker.biography,
-              company: companyName || speaker.organization,
+              company: speakerOrganization,
               "photo-portrait-du-de-la-conferencier-ere": {
                 url: speaker.photoUrl
               },
@@ -57,6 +67,16 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
       }
     }
   }
+}
+
+function generateSlug(inputString) {
+  const newSlug = inputString
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9 ]/g, "")
+    .replace(/ /g, "-");
+  return newSlug;
 }
 
 module.exports = {

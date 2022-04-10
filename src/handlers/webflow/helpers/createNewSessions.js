@@ -19,6 +19,10 @@ async function createNewSessions(
     (s) => s["swapcard-id"]
   );
 
+  for (let i = 0; i < swapCardIdsInWebflow; i++) {
+    console.log(swapCardIdsInWebflow[i]);
+  }
+
   const SWAPCARD_MEMBERS_NAMES = SWAPCARD_SESSIONS.map((s) => {
     return {
       id: s.id,
@@ -128,6 +132,7 @@ async function createNewSessions(
               _draft: false,
               name: session.title,
               "swapcard-id": session.id,
+              // slug: session.title,
               description: session.description,
               "thumbnail-2": {
                 url: session.bannerUrl
