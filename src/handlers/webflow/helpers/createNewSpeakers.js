@@ -10,7 +10,11 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
   );
 
   for (const speaker of SPEAKERS_IN_SWAPCARD) {
-    if (!swapCardIdsInWebflow.includes(speaker.id)) {
+    const speakerGroups = speaker.groups.map((group) => group.name);
+    if (
+      !swapCardIdsInWebflow.includes(speaker.id) &&
+      !(speakerGroups.length === 1 && speakerGroups.includes("Participants"))
+    ) {
       // we create this speaker in webflow
       try {
         let companyName;

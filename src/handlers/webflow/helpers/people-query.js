@@ -10,6 +10,9 @@ query getEventPeopleData($eventId: ID!, $cursor: CursorPaginationInput) {
       biography
       organization
       photoUrl
+      groups {
+        name
+      }
       socialNetworks {
         type
         profile
