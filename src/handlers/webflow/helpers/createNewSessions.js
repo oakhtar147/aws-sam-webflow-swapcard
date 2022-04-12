@@ -19,10 +19,6 @@ async function createNewSessions(
     (s) => s["swapcard-id"]
   );
 
-  for (let i = 0; i < swapCardIdsInWebflow; i++) {
-    console.log(swapCardIdsInWebflow[i]);
-  }
-
   const SWAPCARD_MEMBERS_NAMES = SWAPCARD_SESSIONS.map((s) => {
     return {
       id: s.id,
