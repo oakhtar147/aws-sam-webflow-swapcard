@@ -11,56 +11,37 @@ const {
   getPlanningsVariables
 } = require("./helpers/plannings-query");
 const {
+  getExhibitorsQuery,
+  getExhibitorVariables
+} = require("./helpers/exhibitors-query");
+const {
   getPeopleQuery,
   getPeopleVariables
 } = require("./helpers/people-query");
+const { getAPIResponse } = require("./helpers/api-response");
 const { COLLECTION_ID } = require("./helpers/collection-ids");
 const { createNewSessions } = require("./helpers/createNewSessions");
-
-const ENDPOINT = `https://developer.swapcard.com/event-admin/graphql`;
 
 exports.handler = async (event, context) => {
   const currTime = new Date();
   console.log(`Current Time: ${currTime.toTimeString()}`);
 
-  const swapCardSessions = await fetch(ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: process.env.SWAPCARD_PERSONAL_ACCESS_TOKEN
-    },
-    body: JSON.stringify({
-      query: getPlanningsQuery,
-      variables: getPlanningsVariables
-    })
-  }).then((res) => res.json());
-
-  const swapCardPeople = await fetch(ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: process.env.SWAPCARD_PERSONAL_ACCESS_TOKEN
-    },
-    body: JSON.stringify({
-      query: getPeopleQuery,
-      variables: getPeopleVariables
-    })
-  }).then((res) => res.json());
-
-  const eventSlug = await fetch(ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: process.env.SWAPCARD_PERSONAL_ACCESS_TOKEN
-    },
-    body: JSON.stringify({
-      query: getEventSlugQuery,
-      variables: getEventSlugVariables
-    })
-  }).then((res) => res.json());
+  const swapCardSessions = await getAPIResponse(
+    getPlanningsQuery,
+    getPlanningsVariables
+  );
+  const swapCardPeople = await getAPIResponse(
+    getPeopleQuery,
+    getPeopleVariables
+  );
+  const swapCardExhibitors = await getAPIResponse(
+    getExhibitorsQuery,
+    getExhibitorVariables
+  );
+  const eventSlug = await getAPIResponse(
+    getEventSlugQuery,
+    getEventSlugVariables
+  );
 
   const webflow = new Webflow({
     token: process.env.WEBFLOW_ACCESS_TOKEN
@@ -109,7 +90,7 @@ exports.handler = async (event, context) => {
 
   // create new exhibitors
   console.log("CREATING NEW EXHIBITORS...");
-  await createNewExhibitors(webflow, exhibitors, swapCardSessions, speakers);
+  await createNewExhibitors(webflow, exhibitors, swapCardExhibitors, speakers);
 
   // create new sessions
   console.log("CREATING NEW SESSIONS...\n");

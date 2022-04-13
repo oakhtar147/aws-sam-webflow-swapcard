@@ -17,6 +17,15 @@ query getEventPeopleData($eventId: ID!, $cursor: CursorPaginationInput) {
         type
         profile
       }
+      fields {
+        __typename
+        ... on SelectField {
+          definition {
+            name
+          }
+          value
+        }
+      }
     }
   }
 }

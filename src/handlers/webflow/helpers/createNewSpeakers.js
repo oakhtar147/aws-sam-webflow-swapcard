@@ -1,5 +1,4 @@
 const { COLLECTION_ID } = require("./collection-ids");
-const { makeid } = require("./randomstring");
 
 async function createNewSpeakers(webflow, speakers, swapCardPeople) {
   const SPEAKERS_IN_WEBFLOW_COLLECTION = speakers.items;
@@ -31,6 +30,13 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
           speakerOrganization;
         const newSlug = generateSlug(slugInputDetails);
 
+        let homepageFeature;
+        if (
+          speaker.fields[0] &&
+          speaker.fields[0].definition.name === "Feature On Website Homepage?"
+        )
+          homepageFeature = speaker.fields[0].value === "false" ? false : true;
+
         const newSpeaker = await webflow.createItem(
           {
             collectionId: COLLECTION_ID.speakers,
@@ -47,18 +53,27 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
               "photo-portrait-du-de-la-conferencier-ere": {
                 url: speaker.photoUrl
               },
-              facebook:
-                speaker.socialNetworks.find((sn) => sn.type === "FACEBOOK")
-                  ?.profile ?? ``,
-              linkedin:
-                speaker.socialNetworks.find((sn) => sn.type === "LINKEDIN")
-                  ?.profile ?? ``,
-              instagram:
-                speaker.socialNetworks.find((sn) => sn.type === "INSTAGRAM")
-                  ?.profile ?? ``,
-              twitter:
-                speaker.socialNetworks.find((sn) => sn.type === "TWITTER")
-                  ?.profile ?? ``
+              "featured-homepage": homepageFeature || false,
+              facebook: encodeURI(
+                ex.socialNetworks
+                  .find((sn) => sn.type === "FACEBOOK")
+                  ?.profile.replace(/^/, "facebook.com/") ?? ``
+              ),
+              linkedin: encodeURI(
+                ex.socialNetworks
+                  .find((sn) => sn.type === "LINKEDIN")
+                  ?.profile.replace(/^/, "linkedin.com/company/") ?? ``
+              ),
+              instagram: encodeURI(
+                ex.socialNetworks
+                  .find((sn) => sn.type === "INSTAGRAM")
+                  ?.profile.replace(/^/, "instagram.com/") ?? ``
+              ),
+              twitter: encodeURI(
+                ex.socialNetworks
+                  .find((sn) => sn.type === "TWITTER")
+                  ?.profile.replace(/^/, "twitter.com/") ?? ``
+              )
             }
           },
           { live: true }
