@@ -128,6 +128,7 @@ async function createNewSessions(
               _draft: false,
               name: session.title,
               "swapcard-id": session.id,
+              // slug: session.title,
               description: session.description,
               "thumbnail-2": {
                 url: session.bannerUrl
