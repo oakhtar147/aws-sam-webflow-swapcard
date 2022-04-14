@@ -1,6 +1,5 @@
 const { COLLECTION_ID } = require("./collection-ids");
 const { getSujets } = require("./getSujets");
-const { makeid } = require("./randomstring");
 const { sujetMapping } = require("./sujet-mapping");
 const { mapping } = require("./type-mapping");
 
