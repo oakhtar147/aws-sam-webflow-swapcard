@@ -1,4 +1,3 @@
-const fetch = require("isomorphic-fetch");
 const Webflow = require("webflow-api");
 const { createNewExhibitors } = require("./helpers/createNewExhibitors");
 const { createNewSpeakers } = require("./helpers/createNewSpeakers");

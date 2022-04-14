@@ -1,3 +1,5 @@
+const fetch = require("isomorphic-fetch");
+
 const ENDPOINT = `https://developer.swapcard.com/event-admin/graphql`;
 
 async function getAPIResponse(query, variables) {
