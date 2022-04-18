@@ -55,22 +55,22 @@ async function createNewSpeakers(webflow, speakers, swapCardPeople) {
               },
               "featured-homepage": homepageFeature || false,
               facebook: encodeURI(
-                ex.socialNetworks
+                speaker.socialNetworks
                   .find((sn) => sn.type === "FACEBOOK")
                   ?.profile.replace(/^/, "facebook.com/") ?? ``
               ),
               linkedin: encodeURI(
-                ex.socialNetworks
+                speaker.socialNetworks
                   .find((sn) => sn.type === "LINKEDIN")
                   ?.profile.replace(/^/, "linkedin.com/company/") ?? ``
               ),
               instagram: encodeURI(
-                ex.socialNetworks
+                speaker.socialNetworks
                   .find((sn) => sn.type === "INSTAGRAM")
                   ?.profile.replace(/^/, "instagram.com/") ?? ``
               ),
               twitter: encodeURI(
-                ex.socialNetworks
+                speaker.socialNetworks
                   .find((sn) => sn.type === "TWITTER")
                   ?.profile.replace(/^/, "twitter.com/") ?? ``
               )
