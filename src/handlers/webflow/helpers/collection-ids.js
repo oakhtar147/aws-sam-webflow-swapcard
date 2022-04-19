@@ -1,10 +1,10 @@
 const COLLECTION_ID = {
-	sessions: `62464062e07303c14680ab2c`,
-	exhibitors: `62464062e07303925d80ab2e`,
-	speakers: `62464062e07303743580ab2b`,
-	sujets: `62464062e07303ee2480ab29`,
+  sessions: `6258a6fcf4b0f543f8eee88b`,
+  exhibitors: `6258a6fcf4b0f57707eee889`,
+  speakers: `6258a6fcf4b0f57505eee888`,
+  sujets: `6258a6fcf4b0f5b7d5eee88d`
 };
 
 module.exports = {
-	COLLECTION_ID,
+  COLLECTION_ID
 };

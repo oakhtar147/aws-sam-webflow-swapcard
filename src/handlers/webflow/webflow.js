@@ -17,6 +17,7 @@ const {
   getPeopleQuery,
   getPeopleVariables
 } = require("./helpers/people-query");
+const { getItems } = require("./helpers/get-items");
 const { getAPIResponse } = require("./helpers/api-response");
 const { COLLECTION_ID } = require("./helpers/collection-ids");
 const { createNewSessions } = require("./helpers/createNewSessions");
@@ -47,20 +48,11 @@ exports.handler = async (event, context) => {
   });
 
   // get all the items for a collection
-  const getSessionItems = webflow.items(
-    { collectionId: COLLECTION_ID.sessions },
-    { limit: 100 }
-  );
+  const getSessionItems = getItems(webflow, COLLECTION_ID.sessions);
 
-  const getExhibitorItems = webflow.items(
-    { collectionId: COLLECTION_ID.exhibitors },
-    { limit: 100 }
-  );
+  const getExhibitorItems = getItems(webflow, COLLECTION_ID.exhibitors);
 
-  const getSpeakerItems = webflow.items(
-    { collectionId: COLLECTION_ID.speakers },
-    { limit: 100 }
-  );
+  const getSpeakerItems = getItems(webflow, COLLECTION_ID.speakers);
 
   // each of these are mutate by the POST API calls to webflow below
   // we need the newly created item in the collection

@@ -32,7 +32,7 @@ async function createNewExhibitors(
               "swapcard-id": ex.id,
               name: ex.name,
               description: ex.description,
-              "type-de-partenaire": "Grands Partenaires", // 'we need all these'
+              "type-de-partenaire": ex.type, // 'we need all these'
               location: ex.booth,
               "background-image": {
                 url: ex.backgroundImageUrl
