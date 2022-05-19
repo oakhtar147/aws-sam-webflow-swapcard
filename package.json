@@ -4,6 +4,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"dependencies": {
+		"dotenv": "^16.0.0",
 		"isomorphic-fetch": "^3.0.0",
 		"webflow-api": "^0.6.0"
 	},

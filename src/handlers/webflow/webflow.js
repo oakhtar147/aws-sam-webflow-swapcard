@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const Webflow = require("webflow-api");
 const { syncExhibitors } = require("./helpers/syncExhibitors");
 const { syncSpeakers } = require("./helpers/syncSpeakers");
@@ -28,7 +26,7 @@ const {
 } = require("./helpers/api-response");
 const { COLLECTION_ID } = require("./helpers/collection-ids");
 
-const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   const currTime = new Date();
   console.log(`Current Time: ${currTime.toTimeString()}`);
 
@@ -93,5 +91,3 @@ const handler = async (event, context) => {
 
   return { message: "Success" };
 };
-
-handler();
