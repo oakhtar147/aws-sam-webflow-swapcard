@@ -1,6 +1,9 @@
+require("dotenv").config();
+
 const Webflow = require("webflow-api");
-const { createNewExhibitors } = require("./helpers/createNewExhibitors");
-const { createNewSpeakers } = require("./helpers/createNewSpeakers");
+const { syncExhibitors } = require("./helpers/syncExhibitors");
+const { syncSpeakers } = require("./helpers/syncSpeakers");
+const { syncSessions } = require("./helpers/syncSessions");
 const {
   getEventSlugQuery,
   getEventSlugVariables
@@ -18,15 +21,18 @@ const {
   getPeopleVariables
 } = require("./helpers/people-query");
 const { getItems } = require("./helpers/get-items");
-const { getAPIResponse } = require("./helpers/api-response");
+const {
+  getAPIResponse,
+  getAPISessions,
+  getAPIExhibitors
+} = require("./helpers/api-response");
 const { COLLECTION_ID } = require("./helpers/collection-ids");
-const { createNewSessions } = require("./helpers/createNewSessions");
 
-exports.handler = async (event, context) => {
+const handler = async (event, context) => {
   const currTime = new Date();
   console.log(`Current Time: ${currTime.toTimeString()}`);
 
-  const swapCardSessions = await getAPIResponse(
+  const swapCardSessions = await getAPISessions(
     getPlanningsQuery,
     getPlanningsVariables
   );
@@ -34,7 +40,7 @@ exports.handler = async (event, context) => {
     getPeopleQuery,
     getPeopleVariables
   );
-  const swapCardExhibitors = await getAPIResponse(
+  const swapCardExhibitors = await getAPIExhibitors(
     getExhibitorsQuery,
     getExhibitorVariables
   );
@@ -47,13 +53,6 @@ exports.handler = async (event, context) => {
     token: process.env.WEBFLOW_ACCESS_TOKEN
   });
 
-  // get all the items for a collection
-  const getSessionItems = getItems(webflow, COLLECTION_ID.sessions);
-
-  const getExhibitorItems = getItems(webflow, COLLECTION_ID.exhibitors);
-
-  const getSpeakerItems = getItems(webflow, COLLECTION_ID.speakers);
-
   // each of these are mutate by the POST API calls to webflow below
   // we need the newly created item in the collection
   // to be able to create a new session
@@ -63,11 +62,9 @@ exports.handler = async (event, context) => {
   let sessions = [];
 
   try {
-    [sessions, exhibitors, speakers] = await Promise.all([
-      getSessionItems,
-      getExhibitorItems,
-      getSpeakerItems
-    ]);
+    sessions = await getItems(webflow, COLLECTION_ID.sessions);
+    exhibitors = await getItems(webflow, COLLECTION_ID.exhibitors);
+    speakers = await getItems(webflow, COLLECTION_ID.speakers);
   } catch (e) {
     console.log(e);
   }
@@ -75,17 +72,17 @@ exports.handler = async (event, context) => {
   // const collection = await webflow.collection({ collectionId: COLLECTION_ID.sessions });
   // console.log(collection.fields.map(f => f.slug))
 
-  // create new speakers
-  console.log("\nCREATING NEW SPEAKERS...");
-  await createNewSpeakers(webflow, speakers, swapCardPeople);
+  // // create new speakers
+  console.log("\nCREATING AND UPDATING SPEAKERS...\n");
+  await syncSpeakers(webflow, speakers, swapCardPeople);
 
   // create new exhibitors
-  console.log("CREATING NEW EXHIBITORS...");
-  await createNewExhibitors(webflow, exhibitors, swapCardExhibitors, speakers);
+  console.log("\nCREATING AND UPDATING EXHIBITORS...\n");
+  await syncExhibitors(webflow, exhibitors, swapCardExhibitors, speakers);
 
   // create new sessions
-  console.log("CREATING NEW SESSIONS...\n");
-  await createNewSessions(
+  console.log("\nCREATING AND UPDATING SESSIONS...\n");
+  await syncSessions(
     webflow,
     sessions,
     eventSlug.data.event.slug,
@@ -96,3 +93,5 @@ exports.handler = async (event, context) => {
 
   return { message: "Success" };
 };
+
+handler();

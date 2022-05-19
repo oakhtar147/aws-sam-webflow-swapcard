@@ -1,6 +1,6 @@
 const getExhibitorsQuery = `
-  query getEventExhibitorsData($eventId: String!) {
-    exhibitors(eventId: $eventId, page: 1, pageSize: 1000) {
+  query getEventExhibitorsData($eventId: String!, $page: Int!) {
+    exhibitors(eventId: $eventId, page: $page, pageSize: 1000) {
       id
       name
       type
@@ -33,8 +33,11 @@ const getExhibitorsQuery = `
   }
 `;
 
-const getExhibitorVariables = {
-  eventId: `RXZlbnRfODEyMjIx`
+const getExhibitorVariables = (page) => {
+  return {
+    eventId: `RXZlbnRfODEyMjIx`,
+    page: page
+  };
 };
 
 module.exports = {

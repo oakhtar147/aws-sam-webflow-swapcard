@@ -1,11 +1,12 @@
 const sujetMapping = {
-  "developper-une-idee-dentreprise": "Développer une idée d’entreprise",
-  "financer-une-idee": "Financer une idée",
+  "reprise-dentreprise": "Reprise d'entreprise",
+  "developper-mon-idee-dentreprise": "Développer mon idée d’entreprise",
+  "financer-mon-idee": "Financer mon idée",
   "passer-de-lidee-a-laction": "Passer de l’idée à l’action",
-  "connecter-son-entreprise-aux-nouvelles-technologies":
-    "Connecter son entreprise aux nouvelles technologies",
-  "positionner-son-entreprise": "Positionner son entreprise",
-  "gerer-son-entreprise": "Gérer son entreprise",
+  "connecter-mon-entreprise-aux-technologies":
+    "Connecter mon entreprise aux technologies",
+  "positionner-mon-entreprise": "Positionner mon entreprise",
+  "gerer-mon-entreprise": "Gérer mon entreprise",
   financement: "Financement",
   assurances: "Assurances",
   environnement: "Environnement",

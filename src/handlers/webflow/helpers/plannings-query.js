@@ -1,6 +1,6 @@
 const getPlanningsQuery = `
-  query getEventSessionData($eventId: String!) {
-    plannings(eventId: $eventId, page: 0, pageSize: 1000) {
+  query getEventSessionData($eventId: String!, $page: Int!) {
+    plannings(eventId: $eventId, page: $page, pageSize: 1000) {
         id
         title 
         type
@@ -57,11 +57,14 @@ const getPlanningsQuery = `
       }
   }`;
 
-const getPlanningsVariables = {
-	eventId: `RXZlbnRfODEyMjIx`,
+const getPlanningsVariables = (page) => {
+  return {
+    eventId: `RXZlbnRfODEyMjIx`,
+    page: page
+  };
 };
 
 module.exports = {
-	getPlanningsQuery,
-	getPlanningsVariables,
+  getPlanningsQuery,
+  getPlanningsVariables
 };
