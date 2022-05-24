@@ -5,6 +5,10 @@ const mapping = {
   "Table Ronde": "Table ronde",
   Entretien: "Entretien",
   "Cercle samoan": "Cercle samoan",
+  braindate: "braindate",
+  Cercle: "Cercle",
+  Discussion: "Discussion",
+  Entrevue: "Entrevue",
   "Culture & bien être": "Culture & bien être"
 };
 
